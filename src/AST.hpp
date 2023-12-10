@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 namespace tree {
 class AST
@@ -72,7 +73,6 @@ private:
     std::shared_ptr<ASTNode> root;
     bool winded{false};
     bool unwinded{false};
-
     std::string equation;
 };
 }

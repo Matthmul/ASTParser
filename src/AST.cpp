@@ -2,6 +2,9 @@
 
 namespace tree {
 AST::AST(std::string input) : equation{input} {
+    if (input.size() == 0) {
+        throw std::invalid_argument("Missing expressions");
+    }
     root = std::make_shared<ASTNode>();
     parse(input);
     calculate();
@@ -33,7 +36,7 @@ void AST::parse(std::string input) {
         case '8':
         case '9':
             if(actualNode->type == NodeType::VALUE) {
-                throw "Literal too large";
+                throw std::invalid_argument("Literal too large");
             }
             actualNode = addValue(static_cast<int>(c) - 48, actualNode);
             break;
@@ -42,7 +45,7 @@ void AST::parse(std::string input) {
         case '*':
         case '+':
             if(actualNode->type != NodeType::VALUE && !unwinded) {
-                throw "No literal between opretions";
+                throw std::invalid_argument("No literal between opretions");
             }
             actualNode = addOperation(c, actualNode);
             winded = false;
@@ -50,15 +53,15 @@ void AST::parse(std::string input) {
             break;
         case ',':
         case '.':
-            throw "Fractional numbers are not allowed";
+            throw std::invalid_argument("Fractional numbers are not allowed");
         default:
-            std::cout << "Unknow character: " << c << std::endl;
+            throw std::invalid_argument("Unknow character");
             break;
         }
     }
 
     if(actualNode->type != NodeType::VALUE && !unwinded) {
-        throw "No literal at the end of expressions";
+        throw std::invalid_argument("No literal at the end of expressions");
     }
 }
 
@@ -72,6 +75,12 @@ std::shared_ptr<AST::ASTNode> AST::unwind(std::shared_ptr<ASTNode> node) const {
 }
 
 std::shared_ptr<AST::ASTNode> AST::addValue(const int val, std::shared_ptr<ASTNode> node) {
+    if (node->type == NodeType::UNDEFINED) {
+        node->type = NodeType::VALUE;
+        node->value = val;
+        return node;
+    }
+
     std::shared_ptr<ASTNode> newNode = std::make_shared<ASTNode>(ASTNode{node, NodeType::VALUE, val});
     node->nodes.push_back(newNode);
 
@@ -83,17 +92,13 @@ std::shared_ptr<AST::ASTNode> AST::addOperation(const char oper, std::shared_ptr
     auto parent = node->parent.lock();
     if (parent == nullptr) {
         std::shared_ptr<ASTNode> newNode = std::make_shared<ASTNode>(ASTNode{parent, type});
+        if (type == NodeType::MULTIPLICATION) {
+            newNode->value = 1;
+        }
         newNode->nodes.push_back(node);
         node->parent = newNode;
         root = newNode;
         return newNode;
-    }
-    if (parent->type == NodeType::UNDEFINED) {
-        parent->type = type;
-        if (type == NodeType::MULTIPLICATION) {
-            parent->value = 1;
-        }
-        return parent;
     }
 
     std::shared_ptr<ASTNode> newNode = std::make_shared<ASTNode>(ASTNode{parent, type});
@@ -178,10 +183,8 @@ AST::NodeType AST::getType(char type) {
         return NodeType::MULTIPLICATION;
     case '/':
         return NodeType::DIVISION;
-    case '\0':
-        return NodeType::UNDEFINED;
     default:
-        throw "Unknow type: " + type;
+        return NodeType::UNDEFINED;
     }
 }
 
@@ -246,7 +249,7 @@ void AST::doCalc(const std::shared_ptr<ASTNode> node1, const std::shared_ptr<AST
     {
     case NodeType::DIVISION:
         if (node2->value == 0) {
-            throw std::runtime_error("Division by 0");
+            throw std::logic_error("Division by 0");
         }
         parent->value = node1->value / node2->value;
         break;
