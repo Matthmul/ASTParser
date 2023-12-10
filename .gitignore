@@ -1,0 +1,42 @@
+# Build directories
+build/
+bin/
+lib/
+_deps/
+
+# Ignore generated files by CMake
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Ignore GTest output
+testing/
+
+# Ignore editor/IDE files
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln
+*.suo
+*.ncb
+*.pdb
+*.db
+*.plg
+*.qmake.stash
+
+# Ignore executables and shared libraries
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+*.a
+
+# Ignore any personal settings or keys
+*.config
+*.key
+
