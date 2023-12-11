@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <map>
-#include <queue>
 #include <memory>
 #include <string>
 #include <iostream>
@@ -18,7 +16,6 @@ public:
     AST& operator=(const AST& other) = delete;
     AST& operator=(const AST&& other) = delete;
 
-    void printTree() const;
     int getResult() const;
     std::string getEquation() const;
 

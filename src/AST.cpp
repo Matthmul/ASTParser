@@ -188,8 +188,6 @@ AST::NodeType AST::getType(char type) {
     }
 }
 
-void AST::printTree() const {}
-
 std::string AST::getEquation() const {
     return equation;
 }
