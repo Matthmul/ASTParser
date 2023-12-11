@@ -40,3 +40,5 @@ testing/
 *.config
 *.key
 
+test_*
+parser_*

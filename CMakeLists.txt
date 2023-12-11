@@ -6,6 +6,7 @@ project(Calculator
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(DOWNLOAD_EXTRACT_TIMESTAMP true)
 
 include(FetchContent)
 FetchContent_Declare(

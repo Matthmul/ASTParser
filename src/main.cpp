@@ -6,7 +6,9 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        return 1;
+        std::cout << "Usage" << std::endl << std::endl;
+        std::cout << "parser_app <expresion>" << std::endl << std::endl;
+        return 0;
     }
 
     try {

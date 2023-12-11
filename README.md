@@ -18,7 +18,14 @@ Builded files can be found in src directory.
 #### Running the tests
 
 ```bash
-❯ ctest
+❯ src/test_ast
+```
+
+or
+
+```bash
+❯ cd src
+❯ ctest -VV
 ```
 
 Result of unit tests are also in files in Test directory.
@@ -27,10 +34,10 @@ Result of unit tests are also in files in Test directory.
 
 ```bash
 Usage:
-	calculator_app <expresion>
+	parser_app <expresion>
 ```
 ```bash
-❯ src/calculator_app 2+2
+❯ src/parser_app 2+2
 
 Equation: 2+2 Result: 4
 ```
