@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
         std::cout << " Result: " << ast.getResult() << std::endl;
     } catch (const std::invalid_argument& e) {
         std::cout << e.what() << std::endl;
-    } catch (const std::logic_error e) {
+    } catch (const std::runtime_error e) {
         std::cout << e.what() << std::endl;
     } catch (const std::exception e) {
         std::cout << e.what() << std::endl;

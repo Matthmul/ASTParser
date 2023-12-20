@@ -48,28 +48,29 @@ private:
     }
 
     struct ASTNode {
-        std::weak_ptr<ASTNode> parent;
         NodeType type{NodeType::UNDEFINED};
         int value{0};
-        std::vector<std::shared_ptr<ASTNode>> nodes{};
+        std::shared_ptr<ASTNode> left_node{nullptr};
+        std::shared_ptr<ASTNode> right_node{nullptr};
+
+        ASTNode(NodeType type, std::shared_ptr<ASTNode> left = nullptr, std::shared_ptr<ASTNode> right = nullptr)
+            : type{type}, value{0}, left_node{left}, right_node{right} {}
+        ASTNode(int value) : type{NodeType::VALUE}, value{value}, left_node{nullptr}, right_node{nullptr} {}
     };
 
-    std::shared_ptr<ASTNode> addValue(const int val, std::shared_ptr<ASTNode> node);
-    std::shared_ptr<ASTNode> addOperation(const char oper, std::shared_ptr<ASTNode> node);
-    void parse(std::string input);
     NodeType getType(char type);
-    unsigned int getWeight(NodeType type);
-    bool isTransitional(NodeType type);
-    std::shared_ptr<AST::ASTNode> unwind(std::shared_ptr<ASTNode> node) const;
+    void skipWhiteSpace();
+    std::shared_ptr<ASTNode> parse();
+    std::shared_ptr<ASTNode> expr();
+    std::shared_ptr<ASTNode> term();
+    std::shared_ptr<ASTNode> factor();
     
-    void calculate();
-    void inorderTraversal(const std::shared_ptr<ASTNode> node);
-    void doCalc(const std::shared_ptr<ASTNode> node, const std::shared_ptr<ASTNode> parent);
-    void doCalc(const std::shared_ptr<ASTNode> node1, const std::shared_ptr<ASTNode> node2, const std::shared_ptr<ASTNode> parent);
+    int evaluate(const std::shared_ptr<ASTNode> node);
 
     std::shared_ptr<ASTNode> root;
-    bool winded{false};
-    bool unwinded{false};
     std::string equation;
+    size_t inputIndex{0};
+    int result{0};
+    uint16_t level{0};
 };
 }

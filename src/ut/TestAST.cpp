@@ -16,15 +16,17 @@ TEST_P(ASTParameterizedTest, CalculateExpression) {
 
 INSTANTIATE_TEST_SUITE_P(ASTParameterized, ASTParameterizedTest,
     ::testing::Values(
-        TestData{"5", 5},
-        TestData{"1 - 4", -3},
-        TestData{"3 * 6", 18},
-        TestData{"3 + 5 * 2", 13},
-        TestData{"(4 + 5 * (7 - 3)) - 2", 22},
-        TestData{"4+5+7/2", 12},
-        TestData{"0-1+2/(5+4+1)+1", 0},
-        TestData{"(2*5)/(5+1)", 1},
-        TestData{"1-2/2*4", -3}
+        TestData{"5", 5}, // 0
+        TestData{"1 - 4", -3}, // 1
+        TestData{"3 * 6", 18}, // 2
+        TestData{"3 + 5 * 2", 13}, // 3
+        TestData{"(4 + 5 * (7 - 3)) - 2", 22}, // 4
+        TestData{"4+5+7/2", 12}, // 5
+        TestData{"0-1+2/(5+4+1)+1", 0}, // 6
+        TestData{"(2*5)/(5+1)", 1}, // 7
+        TestData{"1-2/2*4", -3}, // 8
+        TestData{"1 + 1 - 9 -9-9", -25}, // 9
+        TestData{"5-(5-5-5)", 10} // 10
     )
 );
 
@@ -51,13 +53,17 @@ TEST_P(ASTExceptionTest, ParseInvalidExpression) {
 
 INSTANTIATE_TEST_SUITE_P(ASTException, ASTExceptionTest,
     ::testing::Values(
-        ExceptionTestData{"", "Missing expressions"},
-        ExceptionTestData{"3 + * 5", "No literal between opretions"},
-        ExceptionTestData{"10 + 0", "Literal too large"},
-        ExceptionTestData{"1.1 + 2", "Fractional numbers are not allowed"},
-        ExceptionTestData{"1,1 + 2", "Fractional numbers are not allowed"},
-        ExceptionTestData{"1 + 1 +", "No literal at the end of expressions"},
-        ExceptionTestData{"1 / 0", "Division by 0"},
-        ExceptionTestData{"3 $ 5", "Unknow character"}
+        ExceptionTestData{"", "Missing expressions"}, // 12
+        ExceptionTestData{"3 + * 5", "Invalid expression"}, // 13
+        ExceptionTestData{"10 + 0", "Invalid expression"}, // 14
+        ExceptionTestData{"1.1 + 2", "Unknow character"}, // 15
+        ExceptionTestData{"1,1 + 2", "Unknow character"}, // 16
+        ExceptionTestData{"1 + 1 +", "Invalid expression"}, // 17
+        ExceptionTestData{"()", "Invalid expression"}, // 18
+        ExceptionTestData{")", "Invalid expression"}, // 19
+        ExceptionTestData{"1+(2*2+)", "Invalid expression"}, // 20
+        ExceptionTestData{"(1+(1+(1", "Invalid expression"}, // 21
+        ExceptionTestData{"1 / 0", "Division by 0"}, // 22
+        ExceptionTestData{"3 $ 5", "Unknow character"} // 23
     )
 );
